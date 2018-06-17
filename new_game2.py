@@ -216,7 +216,7 @@ about_menu = pygameMenu.TextMenu(surface,
                                  )
 
 MOO = MOLLY[0]
-print(MOO)
+#print(MOO)
 MOO.sort(reverse=False)
 
 for x in range(0,3):

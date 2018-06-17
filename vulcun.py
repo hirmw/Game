@@ -250,7 +250,7 @@ def go():
         #static = pygame.sprite.Group()
     missiles = pygame.sprite.Group()
 
-        #create a player
+    #create a player
     plane = Plane()
     bomb_static = Bomb(plane.rect.centerx, plane.rect.centery + 60)
         #bomb_static = Bomb(50,145)    print('init' + str(bomb_static.rect.y))
@@ -330,6 +330,7 @@ def go():
                         bomb.rect.centery += 10
                         bomb_sound.play()
                         bombs.add(bomb)
+
                     if event.key == pygame.K_ESCAPE:
                         #exit()
                         return
@@ -360,10 +361,13 @@ def go():
                             #get the score
                         #    getScore()
                             planes.remove(currentSprite1)
+                            bombs.remove(bomb_static)
+
                             if bool(planes) == False:
                                 time_r = seconds=((pygame.time.get_ticks()-start_ticks) / 1000)
                                 writescore(time_r)
                                 endgame = getScore()
+                                running = False
 
 
             ##remove target if missile hits target

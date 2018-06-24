@@ -18,7 +18,8 @@ from pygame.locals import *
 from random import randrange
 import os
 import pygame
-from vulcun import *
+import bomber
+#from bomber import main_loop
 
 # Import pygameMenu
 import pygameMenu
@@ -27,17 +28,6 @@ from pygameMenu.locals import *
 #write score
 from score import getScore
 from score import writescore
-
-# Import vulcun
-#import random
-#from random import randrange
-#import time
-#import datetime
-#import os
-#import pygame
-#from pygame.locals import *
-#from score import getScore
-#from score import endTime
 
 
 ABOUT = ['PygameMenu {0}'.format(pygameMenu.__version__),
@@ -49,8 +39,7 @@ COLOR_BLACK = (0, 0, 0)
 COLOR_WHITE = (255, 255, 255)
 FPS = 60.0
 MENU_BACKGROUND_COLOR = (228, 55, 36)
-WINDOW_SIZE = (640, 480)
-
+WINDOW_SIZE = (800, 800)
 
 MOLLY = getScore()
 
@@ -67,8 +56,6 @@ dt = 1 / FPS
 
 # Global variables
 DIFFICULTY = ['EASY']
-
-
 
 # -----------------------------------------------------------------------------
 
@@ -128,10 +115,12 @@ def play_function(difficulty, font):
 
         if main_menu.is_disabled():
             #main_menu.enable()
-            go()
+            print('star')
+            star = bomber.main_game()
+            star.main_loop()
             ##score??
         MOLLY = getScore()
-        #print(MOLLY)
+        print(MOLLY)
             ##score??
         main_menu.enable()
 
@@ -216,19 +205,16 @@ about_menu = pygameMenu.TextMenu(surface,
                                  )
 
 MOO = MOLLY[0]
-#print(MOO)
-MOO.sort(reverse=False)
-
+print(MOO)
+top_scores = sorted(MOO,key=lambda x:float(x))
+print(top_scores)
 for x in range(0,3):
-    p = (MOO[x])
-#for m in MOLLY:
-    #print(m)
-    #MOO.append(m)
-#print(MOO)
-    #sc = str(m)
+    p = (top_scores[x])
+
     about_menu.add_option(p, None)
 
 about_menu.add_option('Return to menu', PYGAME_MENU_BACK)
+
 
 # MAIN MENU
 main_menu = pygameMenu.Menu(surface,
@@ -249,7 +235,7 @@ main_menu = pygameMenu.Menu(surface,
                             )
 main_menu.add_option('Play', play_menu)
 main_menu.add_option('About', about_menu)
-main_menu.add_option('Quit', PYGAME_MENU_CLOSE)
+main_menu.add_option('Quit', PYGAME_MENU_EXIT)
 
 # -----------------------------------------------------------------------------
 # Main loop

@@ -8,6 +8,7 @@ import pygame
 from pygame.locals import *
 from score import getScore
 from score import writescore
+from db import Post
 
 # Import pygameMenu
 import pygameMenu
@@ -51,7 +52,7 @@ os.environ['SDL_VIDEO_CENTERED'] = '1'
 #dt = 1.0 / FPS
 #timer_font = pygame.font.Font(pygameMenu.fonts.FONT_NEVIS, 100)
 
- 
+
 # -----------------------------------------------------------------------------
 
 WIDTH = 800
@@ -326,8 +327,16 @@ class main_game():
 
                             if bool(self.planes) == False:
                                 self.time_r = seconds=((pygame.time.get_ticks() - self.start_ticks) / 1000)
-                                writescore(self.time_r)
-                                endgame = getScore()
+
+                                score_1 = Post(
+                                    name='player1',
+                                    score=self.time_r
+                                )
+                                score_1.save()       # This will perform an insert
+                                print(score_1.score)
+                    #            return score_1
+                                #writescore(self.time_r)
+                                #endgame = getScore()
                                 self.running = False
 
             ##remove target if missile hits target

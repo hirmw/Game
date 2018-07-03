@@ -5,10 +5,14 @@ import time
 import datetime
 import os
 import pygame
+import eztext
+
 from pygame.locals import *
 from score import getScore
 from score import writescore
 from db import Post
+
+
 
 # Import pygameMenu
 import pygameMenu
@@ -375,15 +379,38 @@ class main_game():
 
     def main_loop(self):
 
+            txtbx = eztext.Input(maxlength=45, color=(255,0,0), prompt='Vhat is Vour Nam: ')
+
             if not self.running:
+                print('enable')
                 menu.enable()
             else:
                 while self.running:
 
-                    self.boomb()
-                    self.collide()
-                    self.move()
-                    self.display_refresh()
+                        # events for txtbx
+                        events = pygame.event.get()
+                        # process other events
+                        for event in events:
+                            # close it x button si pressed
+                            if event.type == QUIT: return
+
+                            elif event.type == KEYDOWN:
+                                if event.key == pygame.K_RETURN:
+        #create game loop                            print('return')
+                                    self.boomb()
+                                    self.collide()
+                                    self.move()
+                                #    self.display_refresh()
+                        # clear the screen
+                        screen.fill((255,255,255))
+                        # update txtbx
+                        txtbx.update(events)
+                        # blit txtbx on the sceen
+                        txtbx.draw(screen)
+                        # refresh the display
+                        pygame.display.flip()
+
+
 
 #test local startup
 #start = main_game()

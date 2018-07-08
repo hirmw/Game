@@ -203,16 +203,25 @@ about_menu = pygameMenu.TextMenu(surface,
                                  window_width=WINDOW_SIZE[0]
                                  )
 
-#MOO = MOLLY[0]
-for sc in Post.objects:
-    print('dog' + str(sc.score))
-#top_scores = sorted(score_1,key=lambda x:float(x))
-#print(top_scores)
-#for x in range(0,3):#
-#    p = (top_scores[x])
+name_array = []
+score_array = []
+end_Array = []
 
-    about_menu.add_option(str(sc.score), None)
 
+
+for ne in NamDB.objects:
+    name_array.append(ne.name)
+
+for sc in ScoDB.objects:
+    rin = str(sc.score)
+    score_array.append(rin)
+
+    result = zip(name_array, score_array)
+    resultSet = set(result)
+
+    for lm in resultSet:
+        print(lm)
+        about_menu.add_option(str(lm), None)
 about_menu.add_option('Return to menu', PYGAME_MENU_BACK)
 
 

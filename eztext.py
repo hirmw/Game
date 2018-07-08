@@ -42,7 +42,15 @@ class Input:
     def draw(self, surface):
         """ Draw the text input to a surface """
         text = self.font.render(self.prompt+self.value, 1, self.color)
+        #self.text_name(text)
         surface.blit(text, (self.x, self.y))
+
+    def text_name(self):
+        inn = self.value
+        return inn
+
+    def ret(self, nname):
+        return(nname)
 
     def update(self, events):
         """ Update the input based on passed events """
@@ -101,6 +109,7 @@ class Input:
                     elif event.key == K_COMMA and ',' in self.restricted: self.value += ','
                     elif event.key == K_PERIOD and '.' in self.restricted: self.value += '.'
                     elif event.key == K_SLASH and '/' in self.restricted: self.value += '/'
+                    elif event.key == K_RETURN: self.ret(self.value)
                 elif self.shifted:
                     if event.key == K_a and 'A' in self.restricted: self.value += 'A'
                     elif event.key == K_b and 'B' in self.restricted: self.value += 'B'
@@ -149,5 +158,6 @@ class Input:
                     elif event.key == K_COMMA and '<' in self.restricted: self.value += '<'
                     elif event.key == K_PERIOD and '>' in self.restricted: self.value += '>'
                     elif event.key == K_SLASH and '?' in self.restricted: self.value += '?'
+
 
         if len(self.value) > self.maxlength and self.maxlength >= 0: self.value = self.value[:-1]

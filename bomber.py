@@ -5,9 +5,15 @@ import time
 import datetime
 import os
 import pygame
+import eztext
+from eztext import *
+
 from pygame.locals import *
 from score import getScore
 from score import writescore
+from db import NamDB, ScoDB
+
+
 
 # Import pygameMenu
 import pygameMenu
@@ -51,7 +57,7 @@ os.environ['SDL_VIDEO_CENTERED'] = '1'
 #dt = 1.0 / FPS
 #timer_font = pygame.font.Font(pygameMenu.fonts.FONT_NEVIS, 100)
 
- 
+
 # -----------------------------------------------------------------------------
 
 WIDTH = 800
@@ -96,9 +102,10 @@ font_name = pygame.font.match_font("arial")
 score = 0
 
 #shield
-shield = 3
+shield = 10
 shield_name = ''
 
+txtbx = eztext.Input(maxlength=45, color=(255,0,0), prompt='Vhat is Vour Nam: ')
 
 class Plane(pygame.sprite.Sprite):
     # sprite for the Player
@@ -316,7 +323,7 @@ class main_game():
             if collidedict1:
                 for value1 in collidedict1.values():
                     for currentSprite1 in value1:
-                        print(currentSprite1)
+                    #    print(currentSprite1)
                         currentSprite1.shield -= 1
                         shield1 = currentSprite1.shield
 
@@ -325,9 +332,14 @@ class main_game():
                             self.bombs.remove(self.bomb_static)
 
                             if bool(self.planes) == False:
+#call txtbox function that saves nameto databaseprint(carman)
                                 self.time_r = seconds=((pygame.time.get_ticks() - self.start_ticks) / 1000)
-                                writescore(self.time_r)
-                                endgame = getScore()
+                                self.ScoDB(self.time_r)
+                                self.NamDB(txtbx.value)
+
+                    #            return score_1
+                                #writescore(self.time_r)
+                                #endgame = getScore()
                                 self.running = False
 
             ##remove target if missile hits target
@@ -343,6 +355,33 @@ class main_game():
                             self.targets.remove(currentSprite)
                             shield_name = ''
                             shield = 3
+
+    def NamDB(self, name):
+        name_1 = NamDB(
+            name = name
+        )
+        name_1.save()
+
+    def ScoDB(self, Scor):
+        score_1 = ScoDB(
+            score = Scor
+        )
+        score_1.save()
+
+    #def save_score(self, timee):
+    #    score_1 = Post(
+    #        name='player1',
+    #        score=timee
+    #    )
+    #    score_1.save()
+
+    #def save_name(self, na):
+    #    score_1 = Post(
+    #        name=na,
+    #    )
+    #    score_1.save()         # This will perform an insert
+    #    print(score_1.score)
+
     def move(self):
             self.planes.update()
             self.bombs.update()
@@ -364,7 +403,7 @@ class main_game():
             # after drawing everything
             pygame.display.flip()
 
-    def main_loop(self):
+    def flying(self):
 
             if not self.running:
                 menu.enable()
@@ -375,6 +414,40 @@ class main_game():
                     self.collide()
                     self.move()
                     self.display_refresh()
+
+    def main_loop(self):
+
+
+            print(txtbx.text_name())
+            if not self.running:
+                print('enable')
+                menu.enable()
+            else:
+                while self.running:
+
+                        # events for txtbx
+                        events = pygame.event.get()
+                        # process other events
+                        for event in events:
+                            # close it x button si pressed
+                            if event.type == QUIT: return
+
+                            elif event.type == KEYDOWN:
+                                if event.key == pygame.K_RETURN:
+                                    self.flying()
+#startgamelopp                                    self.running = False
+
+                                #    self.display_refresh()
+                        # clear the screen
+                        screen.fill((255,255,255))
+                        # update txtbx
+                        txtbx.update(events)
+                        # blit txtbx on the sceen
+                        txtbx.draw(screen)
+                        # refresh the display
+                        pygame.display.flip()
+
+
 
 #test local startup
 #start = main_game()

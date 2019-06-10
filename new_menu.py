@@ -19,6 +19,7 @@ from random import randrange
 import os
 import pygame
 import bomber
+from bomber import *
 #from bomber import main_loop
 
 # Import pygameMenu
@@ -26,9 +27,7 @@ import pygameMenu
 from pygameMenu.locals import *
 
 #write score
-from score import getScore
-from score import writescore
-
+import db
 
 ABOUT = ['PygameMenu {0}'.format(pygameMenu.__version__),
          'Author: {0}'.format(pygameMenu.__author__),
@@ -41,7 +40,7 @@ FPS = 60.0
 MENU_BACKGROUND_COLOR = (228, 55, 36)
 WINDOW_SIZE = (800, 800)
 
-MOLLY = getScore()
+#MOLLY = getScore()
 
 # -----------------------------------------------------------------------------
 # Init pygame
@@ -119,8 +118,8 @@ def play_function(difficulty, font):
             star = bomber.main_game()
             star.main_loop()
             ##score??
-        MOLLY = getScore()
-        print(MOLLY)
+        #MOLLY = getScore()
+        #print(MOLLY)
             ##score??
         main_menu.enable()
 
@@ -204,15 +203,25 @@ about_menu = pygameMenu.TextMenu(surface,
                                  window_width=WINDOW_SIZE[0]
                                  )
 
-MOO = MOLLY[0]
-print(MOO)
-top_scores = sorted(MOO,key=lambda x:float(x))
-print(top_scores)
-for x in range(0,3):
-    p = (top_scores[x])
+name_array = []
+score_array = []
+end_Array = []
 
-    about_menu.add_option(p, None)
 
+
+for ne in NamDB.objects:
+    name_array.append(ne.name)
+
+for sc in ScoDB.objects:
+    rin = str(sc.score)
+    score_array.append(rin)
+
+    result = zip(name_array, score_array)
+    resultSet = set(result)
+
+    for lm in resultSet:
+        print(lm)
+        about_menu.add_option(str(lm), None)
 about_menu.add_option('Return to menu', PYGAME_MENU_BACK)
 
 
